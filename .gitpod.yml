@@ -1,0 +1,3 @@
+tasks:
+  - init: jwtTest
+    command: go run jwt_test
