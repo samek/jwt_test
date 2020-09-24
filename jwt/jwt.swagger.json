@@ -1,0 +1,136 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "jwt.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Gets health status - it should check database connection etc ..",
+        "operationId": "GetHealth",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/jwtHealthResponse"
+            }
+          }
+        },
+        "tags": [
+          "JwtService"
+        ]
+      }
+    },
+    "/v2/decode/{jwt}": {
+      "get": {
+        "operationId": "CheckJwt",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/jwtJwtResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "jwt",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "JwtService"
+        ]
+      }
+    },
+    "/v2/encode": {
+      "get": {
+        "summary": "Generates jwt",
+        "operationId": "GenerateJwt",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/jwtJwtResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "exp",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "short",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          },
+          {
+            "name": "Message",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "JwtService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "jwtHealthResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "jwtJwtResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "data": {
+          "type": "object"
+        },
+        "Message": {
+          "type": "string"
+        }
+      }
+    },
+    "protobufNullValue": {
+      "type": "string",
+      "enum": [
+        "NULL_VALUE"
+      ],
+      "default": "NULL_VALUE",
+      "description": "`NullValue` is a singleton enumeration to represent the null value for the\n`Value` type union.\n\n The JSON representation for `NullValue` is JSON `null`.\n\n - NULL_VALUE: Null value."
+    }
+  }
+}
