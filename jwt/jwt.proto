@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package jwt;
+
+import "google/api/annotations.proto";
+import "google/protobuf/struct.proto";
+message Blank {
+
+}
+message HealthResponse {
+    string message = 1;
+}
+
+
+message JwtGenerateRequest {
+    int32 exp = 1;
+    bool short  = 2;
+    string Message = 4;
+    google.protobuf.Struct  data   = 3;
+
+}
+message JwtCheck {
+    string jwt = 1;
+}
+message JwtResponse {
+    bool error = 1;
+    int32 status =2;
+    google.protobuf.Struct data =3;
+    string Message = 4;
+}
+
+
+service JwtService {
+    // Generates jwt
+    rpc GenerateJwt (JwtGenerateRequest) returns (JwtResponse) {
+        option (google.api.http) = {
+            post: "/v2/encode"
+            body: "*"
+        };
+    }
+    //Returns jwt contents or error if it's already expired or invalid
+    rpc CheckJwt (JwtCheck) returns (JwtResponse) {
+        option (google.api.http) = {
+            get: "/v2/decode/{jwt}"
+        };
+    }
+    // Gets health status - it should check database connection etc ..
+    rpc GetHealth (Blank) returns (HealthResponse) {
+        option (google.api.http) = {
+            get: "/health"
+
+        };
+    }
+
+
+
+}
